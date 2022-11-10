@@ -34,6 +34,12 @@ navigator.mediaDevices
         connectToNewUser(userId, stream);
       }, 1000);
     });
+  socket.on("disconnect", () => {
+      socket.broadcast.emit("clear-grid");
+    });
+    socket.on("clear-grid", () => {
+      videoGrid.removeChild(videoGrid.firstElementChild);
+    });
     let text = $("input");
 
     $("html").keydown((e) => {
