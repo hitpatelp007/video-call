@@ -67,6 +67,7 @@ const connectToNewUser = (userId, stream) => {
     videoGrid.remove(video);
     video.remove();
   });
+
 };
 
 const addVideoStream = (video, stream) => {
