@@ -3,6 +3,7 @@ const socket = io("/");
 const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
 myVideo.muted = true;
+const peers = {};
 
 var peer = new Peer(undefined, {
   path: "/peerjs",
@@ -34,6 +35,17 @@ navigator.mediaDevices
         connectToNewUser(userId, stream);
       }, 1000);
     });
+  socket.on('user-disconnected', userId => {
+//     console.log("Disconnect user")
+    //Closing the connection
+    //Call.close()
+
+
+    if (peers[userId])
+        peers[userId].close()
+
+
+})
     let text = $("input");
 
     $("html").keydown((e) => {
@@ -62,7 +74,7 @@ const connectToNewUser = (userId, stream) => {
   call.on("stream", (userVideoStream) => {
     addVideoStream(video, userVideoStream);
   });
-
+  peers[userId] = call
   call.on('close', () => {
     videoGrid.remove(video);
     video.remove();
@@ -75,6 +87,7 @@ const addVideoStream = (video, stream) => {
   video.addEventListener("loadedmetadata", () => {
     video.play();
   });
+  
   videoGrid.append(video);
 };
 
@@ -146,7 +159,7 @@ const setPlayVideo = () => {
 }); */
 
 //display room url
-var roomUrl = window.location.href;
+var roomUrl = window.location.href;peers[userId] = call
 const html = `<h6>Room id: <span>${roomUrl}</span></h6>`;
 document.querySelector(".room_url").innerHTML = html;
 
